@@ -32,16 +32,12 @@
 <ng-template
   #actionButtonContent
 >
-  <div
-    class="sky-action-button-icon-header-container"
-  >
-    <ng-content
-      select="sky-action-button-icon"
-    ></ng-content>
-    <ng-content
-      select="sky-action-button-header"
-    ></ng-content>
-  </div>
+  <ng-content
+    select="sky-action-button-icon"
+  ></ng-content>
+  <ng-content
+    select="sky-action-button-header"
+  ></ng-content>
   <ng-content
     select="sky-action-button-details"
   ></ng-content>

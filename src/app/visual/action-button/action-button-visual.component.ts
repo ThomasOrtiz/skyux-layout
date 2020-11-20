@@ -1,10 +1,19 @@
-import { Component} from '@angular/core';
+import {
+  Component
+} from '@angular/core';
+
+import {
+  SkyThemeService,
+  SkyThemeSettings
+} from '@skyux/theme';
 
 @Component({
   selector: 'action-button-visual',
   templateUrl: './action-button-visual.component.html'
 })
 export class ActionButtonVisualComponent {
+
+  public buttonIsClicked: boolean = false;
 
   // Padding to be applied to the action button container so that the focus outline
   // is fully visible in the screenshot.
@@ -14,11 +23,9 @@ export class ActionButtonVisualComponent {
     url: 'https://developer.blackbaud.com/skyux/components'
   };
 
-  public buttonIsClicked: boolean = false;
-
-  public buttonClicked() {
-    this.buttonIsClicked = true;
-  }
+  constructor(
+    private themeSvc: SkyThemeService
+  ) {}
 
   public applyFocus(): void {
     this.containerPadding = 15;
@@ -26,5 +33,13 @@ export class ActionButtonVisualComponent {
       .getElementById('screenshot-action-button')
       .querySelector('.sky-action-button');
     actionButton.focus();
+  }
+
+  public buttonClicked(): void {
+    this.buttonIsClicked = true;
+  }
+
+  public themeSettingsChange(themeSettings: SkyThemeSettings): void {
+    this.themeSvc.setTheme(themeSettings);
   }
 }
