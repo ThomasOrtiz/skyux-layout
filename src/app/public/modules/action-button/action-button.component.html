@@ -1,5 +1,5 @@
 <a *ngIf="permalink && permalink.route"
-  class="sky-action-button sky-btn-default sky-rounded-corners"
+  class="sky-action-button sky-btn sky-btn-default sky-rounded-corners"
   tabindex="0"
   [fragment]="permalink.route?.extras?.fragment"
   [queryParams]="permalink.route?.extras?.queryParams"
@@ -11,7 +11,7 @@
 </a>
 
 <a *ngIf="permalink && !permalink.route"
-  class="sky-action-button sky-btn-default sky-rounded-corners"
+  class="sky-action-button sky-btn sky-btn-default sky-rounded-corners"
   tabindex="0"
   [href]="permalink.url">
   <ng-container *ngTemplateOutlet="actionButtonContent">
@@ -19,7 +19,7 @@
 </a>
 
 <div *ngIf="!permalink"
-  class="sky-action-button sky-btn-default sky-rounded-corners"
+  class="sky-action-button sky-btn sky-btn-default sky-rounded-corners"
   tabindex="0"
   role="button"
   (click)="buttonClicked()"
@@ -32,13 +32,28 @@
 <ng-template
   #actionButtonContent
 >
+  <div *ngIf="themeName === 'default'"
+    class="sky-action-button-icon-header-container"
+  >
+    <ng-container *ngTemplateOutlet="iconHeaderContent">
+    </ng-container>
+  </div>
+  <ng-container *ngIf="themeName !== 'default'">
+    <ng-container *ngTemplateOutlet="iconHeaderContent">
+    </ng-container>
+  </ng-container>
+  <ng-content
+    select="sky-action-button-details"
+  ></ng-content>
+</ng-template>
+
+<ng-template
+  #iconHeaderContent
+>
   <ng-content
     select="sky-action-button-icon"
   ></ng-content>
   <ng-content
     select="sky-action-button-header"
-  ></ng-content>
-  <ng-content
-    select="sky-action-button-details"
   ></ng-content>
 </ng-template>
