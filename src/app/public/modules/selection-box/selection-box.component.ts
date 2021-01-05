@@ -20,11 +20,15 @@ export class SkySelectionBoxComponent {
   @Output()
   public actionClick = new EventEmitter<any>();
 
-  public buttonClicked(): void {
+  public selected: boolean = false;
+
+  public onClick(): void {
+    this.selected = !this.selected;
     this.actionClick.emit();
   }
 
-  public enterPress(): void {
+  public onEnter(): void {
+    this.selected = !this.selected;
     this.actionClick.emit();
   }
 }

@@ -13,8 +13,8 @@ import {
   Subscription
 } from 'rxjs';
 
-const FONTSIZECLASS_SMALL = '2x';
-const FONTSIZECLASS_LARGE = '3x';
+const FONTSIZECLASS_SMALL = 'lg';
+const FONTSIZECLASS_LARGE = '2x';
 
 /**
  * Specifies an icon to display on the action button.
