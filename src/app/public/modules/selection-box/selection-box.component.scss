@@ -1,0 +1,27 @@
+@import "~@skyux/theme/scss/mixins";
+@import "~@skyux/theme/scss/_compat/mixins";
+@import "~@skyux/theme/scss/themes/modern/_compat/mixins";
+
+.sky-selection-box {
+  display: flex;
+  padding: $sky-padding-even-large;
+
+  .sky-selection-box-text-container {
+    flex: 1;
+    padding: 0 $sky-space-md;
+  }
+
+  .sky-selection-box-control {
+    flex: 0;
+  }
+}
+
+@include sky-theme-modern {
+  .sky-selection-box {
+    padding: $sky-theme-modern-padding-even-xl;
+
+    .sky-selection-box-text-container {
+      padding: 0 $sky-theme-modern-space-md;
+    }
+  }
+}

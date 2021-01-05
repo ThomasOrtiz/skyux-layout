@@ -1,0 +1,18 @@
+@import "~@skyux/theme/scss/mixins";
+@import "~@skyux/theme/scss/_compat/mixins";
+
+@include sky-host-responsive-container-xs-min() {
+  .sky-selection-box-icon-container {
+    margin: 0 $sky-margin-half;
+  }
+}
+
+@include sky-host-responsive-container-sm-min() {
+  .sky-selection-box-icon-container {
+    margin: 0 0 $sky-margin-double;
+  }
+}
+
+.sky-selection-box-icon {
+  color: $sky-text-color-action-primary;
+}

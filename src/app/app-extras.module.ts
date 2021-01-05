@@ -53,6 +53,7 @@ import {
   SkyInlineDeleteModule,
   SkyPageModule,
   SkyPageSummaryModule,
+  SkySelectionBoxModule,
   SkyTextExpandModule,
   SkyTextExpandRepeaterModule,
   SkyToolbarModule
@@ -84,7 +85,8 @@ import {
     SkyTextExpandModule,
     SkyTextExpandRepeaterModule,
     SkyToolbarModule,
-    SkyInlineDeleteModule
+    SkyInlineDeleteModule,
+    SkySelectionBoxModule
   ],
   providers: [
     {

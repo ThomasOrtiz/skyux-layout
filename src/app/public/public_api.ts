@@ -23,6 +23,8 @@ export * from './modules/page/page.module';
 
 export * from './modules/page-summary/page-summary.module';
 
+export * from './modules/selection-box/selection-box.module';
+
 export * from './modules/text-expand/text-expand.module';
 
 export * from './modules/text-expand-repeater/text-expand-repeater.module';

@@ -1,0 +1,165 @@
+import {
+  DebugElement
+} from '@angular/core';
+
+import {
+  async,
+  ComponentFixture,
+  TestBed
+} from '@angular/core/testing';
+
+import {
+  BrowserModule,
+  By
+} from '@angular/platform-browser';
+
+import {
+  RouterTestingModule
+} from '@angular/router/testing';
+
+import {
+  expect
+} from '@skyux-sdk/testing';
+
+import {
+  SkyMediaBreakpoints,
+  SkyMediaQueryService
+} from '@skyux/core';
+
+import {
+  MockSkyMediaQueryService
+} from '@skyux/core/testing';
+
+import {
+  SelectionBoxTestComponent
+} from './fixtures/selection-box.component.fixture';
+
+import {
+  SkySelectionBoxComponent
+} from './selection-box.component';
+
+import {
+  SkySelectionBoxModule
+} from './selection-box.module';
+
+describe('Action button component', () => {
+  let fixture: ComponentFixture<SelectionBoxTestComponent>;
+  let cmp: SelectionBoxTestComponent;
+  let el: HTMLElement;
+  let debugElement: DebugElement;
+  let mockMediaQueryService: MockSkyMediaQueryService;
+
+  beforeEach(() => {
+
+    mockMediaQueryService = new MockSkyMediaQueryService();
+    TestBed.configureTestingModule({
+      declarations: [
+        SelectionBoxTestComponent
+      ],
+      imports: [
+        BrowserModule,
+        RouterTestingModule,
+        SkySelectionBoxModule
+      ]
+    });
+
+    fixture = TestBed.overrideComponent(SkySelectionBoxComponent, {
+      add: {
+        providers: [
+          {
+            provide: SkyMediaQueryService,
+            useValue: mockMediaQueryService
+          }
+        ]
+      }
+    })
+    .createComponent(SelectionBoxTestComponent);
+
+    fixture = TestBed.createComponent(SelectionBoxTestComponent);
+    cmp = fixture.componentInstance as SelectionBoxTestComponent;
+    el = fixture.nativeElement as HTMLElement;
+    debugElement = fixture.debugElement;
+
+    fixture.detectChanges();
+  });
+
+  it('should see if there is a permalink url included as an input to the element', () => {
+    let selectionBox = el.querySelectorAll('.sky-action-button').item(1);
+    expect(selectionBox.tagName === 'a');
+    expect(selectionBox.getAttribute('href')).toBe('https://developer.blackbaud.com/skyux/components');
+  });
+
+  it('should see if there is a permalink route included as an input to the element', () => {
+    let selectionBox = el.querySelectorAll('.sky-action-button').item(2);
+    expect(selectionBox.tagName === 'a');
+    expect(selectionBox.getAttribute('href')).toBe('/?page=1#fragment');
+  });
+
+  it('should use a div element when permalink is not provided', () => {
+    let selectionBox = '.sky-action-button';
+    expect(el.querySelectorAll(selectionBox).item(0).tagName === 'div');
+  });
+
+  it('should transclude icon, header, and detail sections', () => {
+    let iconContainer
+      = '.sky-action-button-icon-header-container .sky-action-button-icon-container';
+    let headerContainer = '.sky-action-button-icon-header-container .sky-action-button-header';
+    let detailsContainer = '.sky-action-button sky-action-button-details';
+
+    expect(el.querySelector(iconContainer)).not.toBeNull();
+
+    expect(el.querySelector(headerContainer)).not.toBeNull();
+
+    expect(el.querySelector(detailsContainer)).not.toBeNull();
+  });
+
+  it('should emit a click event on button click', () => {
+    debugElement.query(By.css('.sky-action-button')).triggerEventHandler('click', undefined);
+    fixture.detectChanges();
+    expect(cmp.buttonIsClicked).toBe(true);
+  });
+
+  it('should emit a click event on enter press', () => {
+    debugElement.query(By.css('.sky-action-button'))
+      .triggerEventHandler('keydown.escape', { });
+    fixture.detectChanges();
+    expect(cmp.buttonIsClicked).toBe(false);
+
+    debugElement.query(By.css('.sky-action-button'))
+      .triggerEventHandler('keydown.enter', { });
+    fixture.detectChanges();
+    expect(cmp.buttonIsClicked).toBe(true);
+  });
+
+  it('should have a role of button and tabindex on the clickable area', () => {
+    expect(debugElement.query(By.css('.sky-action-button')).attributes['role']).toBe('button');
+    expect(debugElement.query(By.css('.sky-action-button')).attributes['tabindex']).toBe('0');
+  });
+
+  it('should display an icon based on iconType', () => {
+    let iconSelector =
+      '.sky-action-button-icon-header-container .sky-action-button-icon-container i.fa-filter';
+    expect(debugElement.query(By.css(iconSelector))).not.toBeNull();
+  });
+
+  it('should change icon size based on media breakpoints query', () => {
+    let smallIconSelector =
+      '.sky-action-button-icon-header-container .sky-action-button-icon-container i.fa-2x';
+    let largeIconSelector =
+      '.sky-action-button-icon-header-container .sky-action-button-icon-container i.fa-3x';
+    mockMediaQueryService.fire(SkyMediaBreakpoints.xs);
+    fixture.detectChanges();
+    expect(debugElement.query(By.css(smallIconSelector))).not.toBeNull();
+    mockMediaQueryService.fire(SkyMediaBreakpoints.sm);
+    fixture.detectChanges();
+    expect(debugElement.query(By.css(largeIconSelector))).not.toBeNull();
+  });
+
+  it('should be accessible', async(() => {
+    fixture.detectChanges();
+    fixture.whenStable().then(() => {
+      expect(fixture.nativeElement).toBeAccessible();
+    });
+  }));
+
+});
