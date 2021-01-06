@@ -12,6 +12,11 @@ import {
 } from '@skyux/docs-tools';
 
 import {
+  SkyCheckboxModule,
+  SkyRadioModule
+} from '@skyux/forms';
+
+import {
   SkyAlertModule,
   SkyKeyInfoModule,
   SkyLabelModule,
@@ -38,10 +43,6 @@ import {
 import {
   SkyCodeModule
 } from '@blackbaud/skyux-lib-code-block';
-
-import {
-  SkyCheckboxModule
-} from '@skyux/forms';
 
 import {
   SkyActionButtonModule,
@@ -80,6 +81,7 @@ import {
     SkyLabelModule,
     SkyPageModule,
     SkyPageSummaryModule,
+    SkyRadioModule,
     SkyRepeaterModule,
     SkySortModule,
     SkyTextExpandModule,

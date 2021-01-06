@@ -27,6 +27,10 @@ import {
 } from './selection-box-container.component';
 
 import {
+  SkySelectionBoxControlComponent
+} from './selection-box-control.component';
+
+import {
   SkySelectionBoxDescriptionComponent
 } from './selection-box-description.component';
 
@@ -46,6 +50,7 @@ import {
   declarations: [
     SkySelectionBoxComponent,
     SkySelectionBoxContainerComponent,
+    SkySelectionBoxControlComponent,
     SkySelectionBoxDescriptionComponent,
     SkySelectionBoxHeaderComponent,
     SkySelectionBoxIconComponent
@@ -60,6 +65,7 @@ import {
   exports: [
     SkySelectionBoxComponent,
     SkySelectionBoxContainerComponent,
+    SkySelectionBoxControlComponent,
     SkySelectionBoxDescriptionComponent,
     SkySelectionBoxHeaderComponent,
     SkySelectionBoxIconComponent

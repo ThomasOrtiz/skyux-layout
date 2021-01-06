@@ -21,7 +21,10 @@
       select="sky-selection-box-description"
     ></ng-content>
   </div>
-  <div class="sky-selection-box-control">
-    <sky-checkbox></sky-checkbox>
-  </div>
+  <ng-content
+    select="sky-checkbox"
+  ></ng-content>
+  <ng-content
+    select="sky-radio"
+  ></ng-content>
 </button>

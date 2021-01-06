@@ -1,19 +1,59 @@
 <div
-  id="screenshot-selection-box"
   class="sky-padding-even-large"
+  [formGroup]="myForm"
 >
-  <sky-selection-box
-    (actionClick)="buttonClicked()"
+  <div
+    formGroupName="checkboxGroup"
+    id="screenshot-selection-box-checkboxes"
   >
-    <sky-selection-box-icon
-      icon="clock"
-      iconType="skyux"
-    ></sky-selection-box-icon>
-    <sky-selection-box-header>
-      Save time and effort
-    </sky-selection-box-header>
-    <sky-selection-box-description>
-      Encourage supporters to interact with your organization
-    </sky-selection-box-description>
-  </sky-selection-box>
+    <h3>checkboxes</h3>
+    <sky-selection-box *ngFor="let item of myArray"
+      (actionClick)="buttonClicked()"
+    >
+      <sky-selection-box-icon
+        [icon]="item.icon"
+        [iconType]="item.iconType"
+      ></sky-selection-box-icon>
+      <sky-selection-box-header>
+        {{ item.header }}
+      </sky-selection-box-header>
+      <sky-selection-box-description>
+        {{ item.description }}
+      </sky-selection-box-description>
+      <sky-checkbox
+        [formControlName]="item.controlName"
+      >
+      </sky-checkbox>
+    </sky-selection-box>
+  </div>
+
+  <div
+    formGroupName="radioGroup"
+    id="screenshot-selection-box-radio-buttons"
+  >
+    <h3>radio buttons</h3>
+    <sky-radio-group
+      ariaLabel="Demo options"
+      formControlName="myOptions"
+    >
+      <sky-selection-box *ngFor="let item of myArray"
+        (actionClick)="buttonClicked()"
+      >
+        <sky-selection-box-icon
+          [icon]="item.icon"
+          [iconType]="item.iconType"
+        ></sky-selection-box-icon>
+        <sky-selection-box-header>
+          {{ item.header }}
+        </sky-selection-box-header>
+        <sky-selection-box-description>
+          {{ item.description }}
+        </sky-selection-box-description>
+        <sky-radio
+          [value]="item.controlName"
+        >
+        </sky-radio>
+      </sky-selection-box>
+    </sky-radio-group>
+  </div>
 </div>
