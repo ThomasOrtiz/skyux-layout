@@ -3,6 +3,7 @@
   [formGroup]="myForm"
 >
   <div
+    class="sky-margin-stacked-default"
     formGroupName="checkboxGroup"
     id="screenshot-selection-box-checkboxes"
   >
@@ -28,14 +29,25 @@
   </div>
 
   <div
+    class="sky-margin-stacked-default"
     formGroupName="radioGroup"
     id="screenshot-selection-box-radio-buttons"
   >
-    <h3>radio buttons</h3>
+    <h3
+      class="sky-control-label sky-control-label-required"
+    >
+      radio buttons
+    </h3>
     <sky-radio-group
       ariaLabel="Demo options"
       formControlName="myOptions"
+      [required]="true"
     >
+      <div *ngIf="myOptions.invalid"
+        class="sky-error-label"
+      >
+        Radio button is required.
+      </div>
       <sky-selection-box *ngFor="let item of myArray"
         (actionClick)="buttonClicked()"
       >
@@ -43,6 +55,32 @@
           [icon]="item.icon"
           [iconType]="item.iconType"
         ></sky-selection-box-icon>
+        <sky-selection-box-header>
+          {{ item.header }}
+        </sky-selection-box-header>
+        <sky-selection-box-description>
+          {{ item.description }}
+        </sky-selection-box-description>
+        <sky-radio
+          [value]="item.controlName"
+        >
+        </sky-radio>
+      </sky-selection-box>
+    </sky-radio-group>
+  </div>
+
+  <div
+    formGroupName="radioGroup"
+    id="screenshot-selection-box-radio-buttons"
+  >
+    <h3>radio buttons (no icons)</h3>
+    <sky-radio-group
+      ariaLabel="Demo options"
+      formControlName="myOptions"
+    >
+      <sky-selection-box *ngFor="let item of myArray"
+        (actionClick)="buttonClicked()"
+      >
         <sky-selection-box-header>
           {{ item.header }}
         </sky-selection-box-header>

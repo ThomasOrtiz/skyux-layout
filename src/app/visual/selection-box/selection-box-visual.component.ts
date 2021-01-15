@@ -1,7 +1,7 @@
 import {
   Component, OnInit
 } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'selection-box-visual',
@@ -37,6 +37,10 @@ export class SelectionBoxVisualComponent implements OnInit {
 
   public myForm: FormGroup;
 
+  get myOptions() {
+    return this.myForm.get('radioGroup').get('myOptions');
+  }
+
   // Padding to be applied to the action button container so that the focus outline
   // is fully visible in the screenshot.
   public containerPadding: number = 0;
@@ -52,9 +56,8 @@ export class SelectionBoxVisualComponent implements OnInit {
         encourage: undefined,
         schedule: undefined
       }),
-      radioGroup: this.formBuilder.group({
-        myOptions: undefined
-      })
+      radioGroup:
+        this.formBuilder.group({ myOptions: undefined }, { validator: Validators.required })
     });
   }
 
