@@ -10,6 +10,7 @@
     <h3>checkboxes</h3>
     <sky-selection-box *ngFor="let item of myArray"
       (actionClick)="buttonClicked()"
+      [control]="myCheckbox"
     >
       <sky-selection-box-icon
         [icon]="item.icon"
@@ -23,6 +24,7 @@
       </sky-selection-box-description>
       <sky-checkbox
         [formControlName]="item.controlName"
+        #myCheckbox
       >
       </sky-checkbox>
     </sky-selection-box>

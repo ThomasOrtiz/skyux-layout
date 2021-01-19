@@ -15,10 +15,6 @@ import {
 } from '@skyux/core';
 
 import {
-  SkyCheckboxModule
-} from '@skyux/forms';
-
-import {
   SkyIconModule
 } from '@skyux/indicators';
 
@@ -58,7 +54,6 @@ import {
   imports: [
     CommonModule,
     RouterModule,
-    SkyCheckboxModule,
     SkyIconModule,
     SkyMediaQueryModule
   ],
