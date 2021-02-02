@@ -1,0 +1,12 @@
+  <ul
+    class="sky-matrix"
+    [ngStyle]="{
+      'grid-template-columns': gridTemplateColumnsStyle
+    }"
+  >
+    <li *ngFor="let matrixItemComponent of matrixItemComponents"
+      class="sky-matrix-item"
+    >
+      <ng-container *ngTemplateOutlet="matrixItemComponent.templateRef"></ng-container>
+    </li>
+  </ul>

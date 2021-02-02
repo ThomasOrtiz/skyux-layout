@@ -58,6 +58,7 @@ import {
   SkyTextExpandRepeaterModule,
   SkyToolbarModule
 } from './public/public_api';
+import { SkyMatrixModule } from './public/modules/matrix/matrix.modue';
 
 @NgModule({
   exports: [
@@ -79,6 +80,7 @@ import {
     SkyIconModule,
     SkyKeyInfoModule,
     SkyLabelModule,
+    SkyMatrixModule,
     SkyPageModule,
     SkyPageSummaryModule,
     SkyRepeaterModule,
