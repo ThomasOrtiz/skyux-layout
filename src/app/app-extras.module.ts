@@ -3,6 +3,10 @@ import {
 } from '@angular/core';
 
 import {
+  SkyCodeModule
+} from '@blackbaud/skyux-lib-code-block';
+
+import {
   SkyAvatarModule
 } from '@skyux/avatar';
 
@@ -36,10 +40,6 @@ import {
 } from '@skyux/grids';
 
 import {
-  SkyCodeModule
-} from '@blackbaud/skyux-lib-code-block';
-
-import {
   SkyCheckboxModule
 } from '@skyux/forms';
 
@@ -51,6 +51,7 @@ import {
   SkyDescriptionListModule,
   SkyFluidGridModule,
   SkyFormatModule,
+  SkyFlexModule,
   SkyInlineDeleteModule,
   SkyPageModule,
   SkyPageSummaryModule,
@@ -75,6 +76,7 @@ import {
     SkyDropdownModule,
     SkyFluidGridModule,
     SkyCheckboxModule,
+    SkyFlexModule,
     SkyFormatModule,
     SkyIconModule,
     SkyKeyInfoModule,

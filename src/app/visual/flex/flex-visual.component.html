@@ -1,0 +1,34 @@
+<!-- <div
+  id="screenshot-action-button"
+>
+  <sky-flex
+    [syncHeight]="true"
+  >
+    <div *ngFor="let item of items">
+      <p>
+        {{ item.description }}
+      </p>
+    </div>
+  </sky-flex>
+</div> -->
+<div
+  class="sky-padding-even-large"
+>
+  <sky-docs-demo-control-panel-theme
+    (themeSettingsChange)="themeSettingsChange($event)"
+  ></sky-docs-demo-control-panel-theme>
+
+  <sky-flex
+    [syncHeight]="true"
+  >
+    <sky-action-button *ngFor="let item of items">
+      <sky-action-button-header>
+        {{ item.name }}
+      </sky-action-button-header>
+      <sky-action-button-details>
+        {{ item.description }}
+      </sky-action-button-details>
+    </sky-action-button>
+  </sky-flex>
+
+</div>

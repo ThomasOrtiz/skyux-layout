@@ -1,0 +1,39 @@
+@import "~@skyux/theme/scss/mixins";
+@import "~@skyux/theme/scss/_compat/mixins";
+
+.sky-flex-container {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  padding: 0 7.5px;
+  max-width: 1440px;
+  margin: 0 auto;
+
+  ::ng-deep > * {
+    flex: 0 1 344px;
+    margin: 0 7.5px 15px;
+    height: 100%;
+
+    .sky-selection.box,
+    .sky-action-button {
+      height: 100% !important;
+      min-width: auto !important;
+    }
+  }
+
+  &.sky-flex-container-md ::ng-deep > *,
+  &.sky-flex-container-lg ::ng-deep > * {
+    flex: 0 1 446px;
+  }
+}
+
+// Reset media styles for modern theme.
+@include sky-theme-modern {
+@include sky-host-responsive-container-sm-min() {
+  .sky-flex-container {
+    ::ng-deep .sky-action-button {
+      max-width: 100%;
+    }
+  }
+}
+}
