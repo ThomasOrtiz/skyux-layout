@@ -14,10 +14,6 @@ import {
   SkyFlexAdapterService
 } from './flex-adapter-service';
 
-import {
-  SkyFlexMediaQueryService
-} from './flex-media-query.service';
-
 @NgModule({
   imports: [
     CommonModule
@@ -29,8 +25,7 @@ import {
     SkyFlexContainerComponent
   ],
   providers: [
-    SkyFlexAdapterService,
-    SkyFlexMediaQueryService
+    SkyFlexAdapterService
   ]
 })
 export class SkyFlexModule { }

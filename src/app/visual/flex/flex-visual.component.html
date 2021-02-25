@@ -1,16 +1,3 @@
-<!-- <div
-  id="screenshot-action-button"
->
-  <sky-flex
-    [syncHeight]="true"
-  >
-    <div *ngFor="let item of items">
-      <p>
-        {{ item.description }}
-      </p>
-    </div>
-  </sky-flex>
-</div> -->
 <div
   class="sky-padding-even-large"
 >
@@ -18,17 +5,40 @@
     (themeSettingsChange)="themeSettingsChange($event)"
   ></sky-docs-demo-control-panel-theme>
 
+  <h3>justify: center</h3>
+
   <sky-flex
     [syncHeight]="true"
   >
-    <sky-action-button *ngFor="let item of items">
-      <sky-action-button-header>
-        {{ item.name }}
-      </sky-action-button-header>
-      <sky-action-button-details>
+    <div *ngFor="let item of items"
+      class="sky-padding-even-default"
+      style="background: lightblue;"
+    >
+      <h3>
+        {{ item.title }}
+      </h3>
+      <p>
         {{ item.description }}
-      </sky-action-button-details>
-    </sky-action-button>
+      </p>
+    </div>
   </sky-flex>
 
+  <h3>justify: left</h3>
+
+  <sky-flex
+    [justify]="left"
+    [syncHeight]="true"
+  >
+    <div *ngFor="let item of items"
+      class="sky-padding-even-default"
+      style="background: lightblue;"
+    >
+      <h3>
+        {{ item.title }}
+      </h3>
+      <p>
+        {{ item.description }}
+      </p>
+    </div>
+  </sky-flex>
 </div>

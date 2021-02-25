@@ -3,45 +3,42 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
+  HostListener,
   Input,
   ViewChild
 } from '@angular/core';
+
+import {
+  SkyMediaBreakpoints
+} from '@skyux/core';
 
 import {
   SkyFlexAdapterService
 } from './flex-adapter-service';
 
 import {
-  SkyFlexMediaBreakpoints
-} from './flex-media-breakpoints';
-
-import {
   SkyFlexMediaQueryService
 } from './flex-media-query.service';
+
+import {
+  SkyFlexJustify
+} from './types/flex-justify';
 
 @Component({
   selector: 'sky-flex',
   templateUrl: './flex.component.html',
-  styleUrls: ['./flex.component.scss']
+  styleUrls: ['./flex.component.scss'],
+  providers: [
+    SkyFlexMediaQueryService
+  ]
 })
 export class SkyFlexContainerComponent implements AfterContentInit {
 
   @Input()
   public syncHeight: boolean;
 
-  public set currentBreakpoint(value: string) {
-    if (value !== this._currentBreakpoint && value !== 'unknown') {
-      this._currentBreakpoint = value;
-      this.updateResponsiveClass();
-      if (this.syncHeight) {
-        this.syncHeightsYo();
-      }
-    }
-  }
-
-  public get currentBreakpoint(): string {
-    return this._currentBreakpoint;
-  }
+  @Input()
+  public justify: SkyFlexJustify = SkyFlexJustify.center;
 
   @ViewChild('flexContainerElement', {
     read: ElementRef,
@@ -49,50 +46,58 @@ export class SkyFlexContainerComponent implements AfterContentInit {
   })
   private elementRef: ElementRef;
 
-  private _currentBreakpoint: string;
+  private set currentBreakpoint(value: SkyMediaBreakpoints) {
+    if (value !== this._currentBreakpoint) {
+      this._currentBreakpoint = value;
+    }
+  }
+
+  private get currentBreakpoint(): SkyMediaBreakpoints {
+    return this._currentBreakpoint || SkyMediaBreakpoints.sm;
+  }
+
+  private _currentBreakpoint: SkyMediaBreakpoints;
 
   constructor(
     private adapterService: SkyFlexAdapterService,
     private changeDetector: ChangeDetectorRef,
     private mediaQueryService: SkyFlexMediaQueryService
-  ) { }
+  ) {
+    console.log(this.currentBreakpoint);
+  }
 
   public ngAfterContentInit(): void {
     // Wait for all content to render before detecting parent width.
     setTimeout(() => {
-      this.updateResponsiveClass();
-      this.mediaQueryService.subscribe((newBreakpoint: SkyFlexMediaBreakpoints) => {
-        switch (newBreakpoint) {
-          case SkyFlexMediaBreakpoints.xs:
-            this.currentBreakpoint = 'xs';
-            break;
-          case SkyFlexMediaBreakpoints.sm:
-            this.currentBreakpoint = 'sm';
-            break;
-          case SkyFlexMediaBreakpoints.md:
-            this.currentBreakpoint = 'md';
-            break;
-          default:
-            this.currentBreakpoint = 'unknown';
-        }
-      });
+      this.updateBreakpointAndResponsiveClass();
+      this.changeDetector.markForCheck();
       if (this.syncHeight) {
-        this.syncHeightsYo();
+        this.syncChildrenHeight();
       }
     });
   }
 
-  private updateResponsiveClass(): void {
-    this.adapterService.setResponsiveClass(this.elementRef);
+  @HostListener('window:resize')
+  public onWindowResize(): void {
+    this.updateBreakpointAndResponsiveClass();
     this.changeDetector.markForCheck();
+    if (this.syncHeight) {
+      this.syncChildrenHeight();
+    }
   }
 
-  private syncHeightsYo(): void {
-    console.log('change height!');
+  private syncChildrenHeight(): void {
     this.adapterService.resetChildHeight(this.elementRef);
     this.changeDetector.detectChanges();
     this.adapterService.syncChildHeight(this.elementRef);
     this.changeDetector.detectChanges();
+  }
+
+  private updateBreakpointAndResponsiveClass(): void {
+    const width = this.adapterService.getWidth(this.elementRef);
+    this.mediaQueryService.setBreakpointForWidth(width);
+    const newBreakpiont = this.mediaQueryService.current;
+    this.adapterService.setResponsiveClass(this.elementRef, newBreakpiont);
   }
 
 }

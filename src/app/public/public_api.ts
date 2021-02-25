@@ -14,6 +14,7 @@ export * from './modules/description-list/description-list.module';
 export * from './modules/description-list/types/description-list-mode';
 
 export * from './modules/flex/flex.module';
+export * from './modules/flex/types/flex-justify';
 
 export * from './modules/fluid-grid/fluid-grid-gutter-size';
 export * from './modules/fluid-grid/fluid-grid.module';

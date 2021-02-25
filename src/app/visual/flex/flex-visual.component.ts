@@ -9,41 +9,38 @@ import {
 
 @Component({
   selector: 'flex-visual',
-  templateUrl: './flex-visual.component.html',
-  styles: [
-    '.foo { background: lightblue }'
-  ]
+  templateUrl: './flex-visual.component.html'
 })
 export class FlexVisualComponent {
 
   public items: any[] = [
     {
-      name: 'Save time and effort',
-      description: 'Encourage supporters to interact with your organization'
+      title: 'Officia deserunt mollit',
+      description: 'Excepteur sint occaecat cupidatat non proident.'
     },
     {
-      name: 'Sed vitae lectus congue',
-      description: 'Donec vel sagittis turpis, at sollicitudin dolor'
+      title: 'Sed vitae lectus congue',
+      description: 'Donec vel sagittis turpis, at sollicitudin dolor.'
     },
     {
-      name: 'Cras felis enim',
-      description: 'Sagittis id egestas ac, e sollicitudin vitae sem'
+      title: 'Cras felis enim',
+      description: 'Sagittis id egestas ac, e sollicitudin vitae sem.'
     },
     {
-      name: 'Aliquam sit amet turpis vestibulum e luctus turpis eget',
-      description: 'Donec tincidunt lectus et ligula dapibus, a iaculis nibh sagittis'
+      title: 'Aliquam sit amet turpis vestibulum e luctus turpis eget',
+      description: 'Donec tincidunt lectus et ligula dapibus, a iaculis nibh sagittis.'
     },
     {
-      name: 'Praesent sed fermentum elit',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus elementum placerat tortor, sit amet convallis ligula consequat sit amet. Etiam quis pretium nunc.'
+      title: '*** This flex child should set the height for all the others ***',
+      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus elementum placerat tortor, sit amet convallis ligula consequat sit amet. Etiam quis pretium nunc. Donec vel sagittis turpis, at sollicitudin dolor.'
     },
     {
-      name: 'Nulla non felis feugiat',
-      description: 'Donec vel sagittis turpis'
+      title: 'Nulla non felis feugiat',
+      description: 'Donec vel sagittis turpis.'
     },
     {
-      name: 'Duis massa neque',
-      description: 'Splacerat sit amet finibus a, varius vel tortor'
+      title: 'Duis massa neque',
+      description: 'Splacerat sit amet finibus a, varius vel tortor.'
     }
   ];
 

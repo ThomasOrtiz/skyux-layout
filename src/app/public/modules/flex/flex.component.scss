@@ -4,13 +4,19 @@
 .sky-flex-container {
   display: flex;
   flex-flow: row wrap;
-  justify-content: center;
   padding: 0 7.5px;
   max-width: 1440px;
   margin: 0 auto;
 
+  &.sky-flex-justify-center {
+    justify-content: center;
+  }
+
+  &.sky-flex-justify-left {
+    justify-content: flex-start;
+  }
+
   ::ng-deep > * {
-    flex: 0 1 344px;
     margin: 0 7.5px 15px;
     height: 100%;
 
@@ -21,8 +27,13 @@
     }
   }
 
-  &.sky-flex-container-md ::ng-deep > *,
-  &.sky-flex-container-lg ::ng-deep > * {
+  &.sky-responsive-container-sm ::ng-deep > *,
+  &.sky-responsive-container-xs ::ng-deep > * {
+    flex: 0 1 344px;
+  }
+
+  &.sky-responsive-container-lg ::ng-deep > *,
+  &.sky-responsive-container-md ::ng-deep > * {
     flex: 0 1 446px;
   }
 }

@@ -1,142 +1,85 @@
 import {
-  Injectable,
-  NgZone,
-  OnDestroy
+  Injectable
 } from '@angular/core';
+
+import {
+  SkyMediaBreakpoints,
+  SkyMediaQueryListener
+} from '@skyux/core';
 
 import {
   BehaviorSubject,
   Subscription
 } from 'rxjs';
 
-import {
-  SkyFlexMediaBreakpoints
-} from './flex-media-breakpoints';
-
-import {
-  SkyFlexMediaQueryListener
-} from './flex-media-query-listener';
-
+/**
+ * @internal
+ */
 @Injectable()
-export class SkyFlexMediaQueryService implements OnDestroy {
+export class SkyFlexMediaQueryService {
 
-  /**
-   * The size for the `xs` breakpoint.
-   */
-  public static xs = '(max-width: 767px)';
-
-  /**
-   * The size for the `sm` breakpoint.
-   */
-  public static sm = '(min-width: 768px) and (max-width: 991px)';
-
-  /**
-   * The size for the `md` breakpoint.
-   */
-  public static md = '(min-width: 992px) and (max-width: 1199px)';
-
-  /**
-   * Returns the current breakpoint.
-   */
-  public get current(): SkyFlexMediaBreakpoints {
+  public get current(): SkyMediaBreakpoints {
     return this._current;
   }
 
-  private currentSubject = new BehaviorSubject<SkyFlexMediaBreakpoints>(this.current);
+  private currentSubject = new BehaviorSubject<SkyMediaBreakpoints>(this.current);
 
-  private _current = SkyFlexMediaBreakpoints.md;
+  private _current = SkyMediaBreakpoints.xs;
 
-  private breakpoints: {
-    mediaQueryString: string,
-    name: SkyFlexMediaBreakpoints
-  }[] = [
-    {
-      mediaQueryString: SkyFlexMediaQueryService.xs,
-      name: SkyFlexMediaBreakpoints.xs
-    },
-    {
-      mediaQueryString: SkyFlexMediaQueryService.sm,
-      name: SkyFlexMediaBreakpoints.sm
-    },
-    {
-      mediaQueryString: SkyFlexMediaQueryService.md,
-      name: SkyFlexMediaBreakpoints.md
-    }
-  ];
-
-  private mediaQueries: {
-    mediaQueryList: MediaQueryList,
-    listener: ((event: any) => void)
-  }[] = [];
-
-  constructor(
-    private zone: NgZone
-  ) {
-    this.addListeners();
+  constructor() {
+    this.currentSubject.next(this._current);
   }
 
-  public ngOnDestroy(): void {
-    this.removeListeners();
-    this.currentSubject.complete();
-  }
-
-  /**
-   * Suscribes to screen size changes.
-   * @param listener Specifies a function that is called when breakpoints change.
-   */
-  public subscribe(listener: SkyFlexMediaQueryListener): Subscription {
+  public subscribe(listener: SkyMediaQueryListener): Subscription {
     return this.currentSubject.subscribe({
-      next: (breakpoints: SkyFlexMediaBreakpoints) => {
+      next: (breakpoints: SkyMediaBreakpoints) => {
         listener(breakpoints);
       }
     });
   }
 
-  /**
-   * @internal
-   */
-  public destroy(): void {
-    this.removeListeners();
-    this.currentSubject.complete();
-  }
+  public setBreakpointForWidth(width: number): void {
+    let breakpoint: SkyMediaBreakpoints;
 
-  private addListeners(): void {
-    this.mediaQueries = this.breakpoints.map((breakpoint: any) => {
-      const mq = matchMedia(breakpoint.mediaQueryString);
+    if (this.isWidthWithinBreakpiont(width, SkyMediaBreakpoints.xs)) {
+      breakpoint = SkyMediaBreakpoints.xs;
+    } else if (this.isWidthWithinBreakpiont(width, SkyMediaBreakpoints.sm)) {
+      breakpoint = SkyMediaBreakpoints.sm;
+    } else if (this.isWidthWithinBreakpiont(width, SkyMediaBreakpoints.md)) {
+      breakpoint = SkyMediaBreakpoints.md;
+    } else {
+      breakpoint = SkyMediaBreakpoints.lg;
+    }
 
-      const listener = (event: any) => {
-        // Run the check outside of Angular's change detection since Angular
-        // does not wrap matchMedia listeners in NgZone.
-        // See: https://blog.assaf.co/angular-2-change-detection-zones-and-an-example/
-        this.zone.run(() => {
-          if (event.matches) {
-            this.notifyBreakpointChange(breakpoint.name);
-          }
-        });
-      };
-
-      mq.addListener(listener);
-
-      if (mq.matches) {
-        this.notifyBreakpointChange(breakpoint.name);
-      }
-
-      return {
-        mediaQueryList: mq,
-        listener
-      };
-    });
-  }
-
-  private removeListeners(): void {
-    this.mediaQueries.forEach((mediaQuery) => {
-      mediaQuery.mediaQueryList.removeListener(mediaQuery.listener);
-    });
-    this.mediaQueries = [];
-  }
-
-  private notifyBreakpointChange(breakpoint: SkyFlexMediaBreakpoints): void {
     this._current = breakpoint;
-    this.currentSubject.next(breakpoint);
+    this.currentSubject.next(this._current);
+  }
+
+  public isWidthWithinBreakpiont(width: number, breakpoint: SkyMediaBreakpoints): boolean {
+    const xsBreakpointMaxPixels = 767;
+    const smBreakpointMinPixels = 768;
+    const smBreakpointMaxPixels = 991;
+    const mdBreakpointMinPixels = 992;
+    const mdBreakpointMaxPixels = 1199;
+    const lgBreakpointMinPixels = 1200;
+
+    switch (breakpoint) {
+      case SkyMediaBreakpoints.xs: {
+        return (width <= xsBreakpointMaxPixels);
+      }
+      case SkyMediaBreakpoints.sm: {
+        return (width >= smBreakpointMinPixels && width <= smBreakpointMaxPixels);
+      }
+      case SkyMediaBreakpoints.md: {
+        return (width >= mdBreakpointMinPixels && width <= mdBreakpointMaxPixels);
+      }
+      default: {
+        return (width >= lgBreakpointMinPixels);
+      }
+    }
+  }
+
+  public destroy(): void {
+    this.currentSubject.complete();
   }
 }
