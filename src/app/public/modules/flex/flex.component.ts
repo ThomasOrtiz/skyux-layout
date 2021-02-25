@@ -17,20 +17,13 @@ import {
 } from './flex-adapter-service';
 
 import {
-  SkyFlexMediaQueryService
-} from './flex-media-query.service';
-
-import {
   SkyFlexJustify
 } from './types/flex-justify';
 
 @Component({
   selector: 'sky-flex',
   templateUrl: './flex.component.html',
-  styleUrls: ['./flex.component.scss'],
-  providers: [
-    SkyFlexMediaQueryService
-  ]
+  styleUrls: ['./flex.component.scss']
 })
 export class SkyFlexContainerComponent implements AfterContentInit {
 
@@ -49,6 +42,9 @@ export class SkyFlexContainerComponent implements AfterContentInit {
   private set currentBreakpoint(value: SkyMediaBreakpoints) {
     if (value !== this._currentBreakpoint) {
       this._currentBreakpoint = value;
+      if (this.syncHeight) {
+        this.updateChildHeight();
+      }
     }
   }
 
@@ -60,11 +56,8 @@ export class SkyFlexContainerComponent implements AfterContentInit {
 
   constructor(
     private adapterService: SkyFlexAdapterService,
-    private changeDetector: ChangeDetectorRef,
-    private mediaQueryService: SkyFlexMediaQueryService
-  ) {
-    console.log(this.currentBreakpoint);
-  }
+    private changeDetector: ChangeDetectorRef
+  ) {}
 
   public ngAfterContentInit(): void {
     // Wait for all content to render before detecting parent width.
@@ -72,7 +65,7 @@ export class SkyFlexContainerComponent implements AfterContentInit {
       this.updateBreakpointAndResponsiveClass();
       this.changeDetector.markForCheck();
       if (this.syncHeight) {
-        this.syncChildrenHeight();
+        this.updateChildHeight();
       }
     });
   }
@@ -81,23 +74,20 @@ export class SkyFlexContainerComponent implements AfterContentInit {
   public onWindowResize(): void {
     this.updateBreakpointAndResponsiveClass();
     this.changeDetector.markForCheck();
-    if (this.syncHeight) {
-      this.syncChildrenHeight();
-    }
   }
 
-  private syncChildrenHeight(): void {
-    this.adapterService.resetChildHeight(this.elementRef);
-    this.changeDetector.detectChanges();
-    this.adapterService.syncChildHeight(this.elementRef);
-    this.changeDetector.detectChanges();
+  private updateChildHeight(): void {
+    setTimeout(() => {
+      this.adapterService.resetChildHeight(this.elementRef);
+      this.adapterService.syncChildHeight(this.elementRef);
+    });
   }
 
   private updateBreakpointAndResponsiveClass(): void {
     const width = this.adapterService.getWidth(this.elementRef);
-    this.mediaQueryService.setBreakpointForWidth(width);
-    const newBreakpiont = this.mediaQueryService.current;
-    this.adapterService.setResponsiveClass(this.elementRef, newBreakpiont);
+    this.adapterService.setBreakpointForWidth(width);
+    this.currentBreakpoint = this.adapterService.currentBreakpoint;
+    this.adapterService.setResponsiveClass(this.elementRef, this.currentBreakpoint);
   }
 
 }

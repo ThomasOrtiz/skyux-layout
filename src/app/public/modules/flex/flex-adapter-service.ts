@@ -9,17 +9,7 @@ import {
   SkyMediaBreakpoints
 } from '@skyux/core';
 
-import {
-  BehaviorSubject
-} from 'rxjs';
-
-import {
-  SkyFlexBreakpoint
-} from './types/flex-breakpoint';
-
-const SKY_FLEX_CONTAINTER_CLASS_SM = 'sky-flex-container-sm';
-const SKY_FLEX_CONTAINTER_CLASS_MD = 'sky-flex-container-md';
-const SKY_FLEX_CONTAINER_SM_MAX_WIDTH = 991;
+const SM_BREAKPOINT_MAX_PIXELS = 991;
 
 /**
  * @internal
@@ -27,18 +17,13 @@ const SKY_FLEX_CONTAINER_SM_MAX_WIDTH = 991;
 @Injectable()
 export class SkyFlexAdapterService {
 
-  /**
-   * Returns the current breakpoint.
-   */
-  public get current(): SkyFlexBreakpoint {
-    return this._current;
+  public get currentBreakpoint(): SkyMediaBreakpoints {
+    return this._currentBreakpoint;
   }
 
-  private currentSubject = new BehaviorSubject<SkyFlexBreakpoint>(this.current);
-
-  private _current = SkyFlexBreakpoint.sm;
-
   private renderer: Renderer2;
+
+  private _currentBreakpoint = SkyMediaBreakpoints.xs;
 
   constructor(
     rendererFactory: RendererFactory2
@@ -47,38 +32,17 @@ export class SkyFlexAdapterService {
   }
 
   /**
-   * Adds responsive CSS class on the provided element, based on its current width.
+   * Returns immediate child elements of the provided elementRef.
    */
-  public setResponsiveClass(element: ElementRef, breakpoint: SkyMediaBreakpoints): void {
-    const nativeEl: HTMLElement = element.nativeElement;
+  public getImmediateChildren(elementRef: ElementRef): NodeListOf<HTMLElement> {
+    return elementRef.nativeElement.querySelectorAll(':scope > *');
+  }
 
-    this.renderer.removeClass(nativeEl, 'sky-responsive-container-xs');
-    this.renderer.removeClass(nativeEl, 'sky-responsive-container-sm');
-    this.renderer.removeClass(nativeEl, 'sky-responsive-container-md');
-    this.renderer.removeClass(nativeEl, 'sky-responsive-container-lg');
-
-    let newClass: string;
-
-    switch (breakpoint) {
-      case SkyMediaBreakpoints.xs: {
-        newClass = 'sky-responsive-container-xs';
-        break;
-      }
-      case SkyMediaBreakpoints.sm: {
-        newClass = 'sky-responsive-container-sm';
-        break;
-      }
-      case SkyMediaBreakpoints.md: {
-        newClass = 'sky-responsive-container-md';
-        break;
-      }
-      default: {
-        newClass = 'sky-responsive-container-lg';
-        break;
-      }
-    }
-
-    this.renderer.addClass(nativeEl, newClass);
+  /**
+   * Returns the clientWidth of the provided elementRef.
+   */
+  public getWidth(elementRef: ElementRef): number {
+    return elementRef.nativeElement.clientWidth;
   }
 
   /**
@@ -88,6 +52,44 @@ export class SkyFlexAdapterService {
     const children = this.getImmediateChildren(elementRef);
     // tslint:disable-next-line: no-null-keyword
     children.forEach(item => item.style.height = null);
+  }
+
+  public setBreakpointForWidth(width: number): void {
+    let breakpoint: SkyMediaBreakpoints;
+
+    if (width <= SM_BREAKPOINT_MAX_PIXELS) {
+      breakpoint = SkyMediaBreakpoints.sm;
+    } else {
+      breakpoint = SkyMediaBreakpoints.md;
+    }
+
+    this._currentBreakpoint = breakpoint;
+  }
+
+  /**
+   * Adds responsive CSS class on the provided element, based on its current width.
+   */
+  public setResponsiveClass(element: ElementRef, breakpoint: SkyMediaBreakpoints): void {
+    const nativeEl: HTMLElement = element.nativeElement;
+
+    this.renderer.removeClass(nativeEl, 'sky-responsive-container-sm');
+    this.renderer.removeClass(nativeEl, 'sky-responsive-container-md');
+
+    let newClass: string;
+
+    // tslint:disable-next-line: switch-default
+    switch (breakpoint) {
+      case SkyMediaBreakpoints.sm: {
+        newClass = 'sky-responsive-container-sm';
+        break;
+      }
+      case SkyMediaBreakpoints.md: {
+        newClass = 'sky-responsive-container-md';
+        break;
+      }
+    }
+
+    this.renderer.addClass(nativeEl, newClass);
   }
 
   /**
@@ -100,33 +102,6 @@ export class SkyFlexAdapterService {
       maxHeight = Math.max(maxHeight, el.offsetHeight);
     });
     children.forEach(item => item.style.height = maxHeight + 'px');
-  }
-
-  public getWidth(elementRef: ElementRef): number {
-    return elementRef.nativeElement.clientWidth;
-  }
-
-  /**
-   * Returns immediate children of the provided elementRef.
-   */
-  private getImmediateChildren(elementRef: ElementRef): NodeListOf<HTMLElement> {
-    return elementRef.nativeElement.querySelectorAll(':scope > *');
-  }
-
-  /**
-   * Returns the appropriate CSS class name based on the width of the element.
-   */
-  private getResponsiveClassName(width: number): string {
-    if (width <= SKY_FLEX_CONTAINER_SM_MAX_WIDTH) {
-      return SKY_FLEX_CONTAINTER_CLASS_SM;
-    } else {
-      return SKY_FLEX_CONTAINTER_CLASS_MD;
-    }
-  }
-
-  private notifyBreakpointChange(breakpoint: SkyFlexBreakpoint): void {
-    this._current = breakpoint;
-    this.currentSubject.next(breakpoint);
   }
 
 }
